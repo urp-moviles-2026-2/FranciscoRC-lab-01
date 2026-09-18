@@ -18,10 +18,10 @@ function TareaItem({ tarea, onEliminar }) {
   return (
     <ReanimatedSwipeable
       renderRightActions={renderRightActions}
-      overrideRight = {false}
+      overshootRight = {false}
     >
       <View style ={styles.card}>
-        <Text>{tarea.texto}</Text>
+        <Text style={styles.cardText}>{tarea.texto}</Text>
       </View>
     </ReanimatedSwipeable>
   );
@@ -44,40 +44,46 @@ export default function App() {
     setTextoTarea('');
   }
   return (
-    <SafeAreaProvider style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }} justifyContent="center" alignItems="center">
+    
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
-            <StatusBar style="auto" />
+          <SafeAreaProvider>
+            <SafeAreaView style={styles.container}> 
+                <StatusBar style="dark"/>
 
-            <View>
-              <TextInput
-                placeholder="Escribe una tarea"
-                value={textoTarea}
-                onChangeText={setTextoTarea}
-              />
-              <Pressable onPress={agregarTarea}>
-                <Text>Agregar Tarea</Text>
-              </Pressable>
-            </View>
+                <View style={styles.header}>
+                  <Text style={styles.headerTitle}> Tareas </Text>
+                </View>
 
-            <FlatList
-              data={tareas}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) => (
-                <TareaItem
-                  tarea={item}
-                  onEliminar={(id) => {
-                    setTareas(actuales => actuales.filter(t => t.id !== id));
-                  }}
+                <View style={styles.formCard}>
+                  <View style={styles.inputWrapper}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Escribe una tarea"
+                      value={textoTarea}
+                      onChangeText={setTextoTarea}
+                    />
+                  </View>
+                    <Pressable style={styles.addButton} onPress={agregarTarea}>
+                      <Text style={styles.addButtonText}> + Agregar Tarea </Text>
+                    </Pressable>
+                </View>
+
+                <FlatList
+                  data={tareas}
+                  keyExtractor={item => item.id}
+                  renderItem={({ item }) => (
+                    <TareaItem
+                      tarea={item}
+                      onEliminar={(id) => {
+                        setTareas(actuales => actuales.filter(t => t.id !== id));
+                      }}
+                    />
+                  )}
                 />
-              )}
-            />  
-          </View>
+
+            </SafeAreaView>
+          </SafeAreaProvider>
         </GestureHandlerRootView>
-      </SafeAreaView>
-    </SafeAreaProvider>
   );
 }
 
@@ -86,26 +92,81 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#eff6ff', 
+    paddingHorizontal: 16,
+  },
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 14,
+    gap: 12,
+  },
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#0f172a',
+  },
+  formCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 22,
+    padding: 16,
+    marginBottom: 16,
+    gap: 12,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#eef2ff', 
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    height: 52,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: '#1e1b4b',
+  },
+  addButton: {
+    flexDirection: 'row',
+    backgroundColor: '#19720d',
+    height: 50,
+    borderRadius: 16,
     justifyContent: 'center',
+    alignItems: 'center',
+    gap: 6,
+  },
+  addButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
   },
   card: {
-    backgroundColor: '#f9f9f9',
-    padding: 15,
-    marginVertical: 5,
-    borderRadius: 5,
-    width: '90%',
+    backgroundColor: '#ffffff',
+    borderRadius: 20,
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderColor: '#e0e7ff',
+    minHeight: 56,
+    justifyContent: 'center',
+  },
+  cardText: {
+    fontSize: 16,
+    color: '#0f172a',
+    fontWeight: '500',
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#b91c1c',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 80,
-    height: '100%',
+    width: 86,
+    borderRadius: 20,
+    marginLeft: 10,
+    gap: 4,
   },
   deleteButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  } 
+    color: 'rgb(255, 255, 255)',
+    fontSize: 12,
+    fontWeight: '700',
+  },
 })
